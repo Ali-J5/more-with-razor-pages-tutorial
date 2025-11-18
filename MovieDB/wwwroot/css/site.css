@@ -16,3 +16,60 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+ul.movie-list {
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid gray;
+}
+
+ul.movie-list > li {
+    list-style-type: none;
+    border-bottom: 1px solid lightgray;
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 50px;
+}
+
+.title {
+    color: darkslategray;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.top-title {
+    color: darkslategray;
+    text-align: center;
+}
+
+.mpaa, .genre {
+    color: slategrey;
+}
+
+.ratings {
+    display: flex;
+    flex-direction: row;
+}
+
+.imdb, .rotten-tomatoes {
+    color: gray;
+    border: 1px solid gray;
+    width: 60px;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.imdb::before {
+    content: "IMDB";
+    display: block;
+    font-size: 1rem;
+}
+
+.rotten-tomatoes::before {
+    content: "Rotten";
+    display: block;
+    font-size: 1rem;
+}
