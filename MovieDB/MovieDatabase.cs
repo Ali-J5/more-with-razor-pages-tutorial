@@ -65,6 +65,22 @@ namespace MovieDB
 
         public static IEnumerable<Movie> Search(string terms)
         {
+            //extension methods
+            //where
+            //takes a delegate which takes a parameter that is the current item being enumerated
+            //delegates body is a bool expression that is true if the current item is one i want to keep
+
+            if (terms == null) return All;
+
+            //uses extension methods
+            return All.Where(movie => movie.Title != null && movie.Title.Contains(terms, StringComparison.CurrentCultureIgnoreCase));
+
+
+            /*
+            //uses querty-style syntax
+            return from movie in All where movie.Title != null && movie.Title.Contains(terms, StringComparison.CurrentCultureIgnoreCase) select movie;
+            */
+            /*
             List<Movie> result = new List<Movie>();
 
             //handle case where terms is null (which it will be when the page first loads)
@@ -79,6 +95,7 @@ namespace MovieDB
             }
 
             return result;
+            */
         }
 
         /// <summary>
@@ -89,8 +106,18 @@ namespace MovieDB
         /// <returns>A collection containing only movies that match the filter</returns>
         public static IEnumerable<Movie> FilterByMPAARating(IEnumerable<Movie> movies, IEnumerable<string> ratings)
         {
+            // if no filter is specified, just return the provided collection
             if (ratings == null || ratings.Count() == 0) return movies;
 
+            //filter the supplied collection of movies
+            /*
+            return movies.Where(movie => movie.MPAARating != null && ratings.Contains(movie.MPAARating)).OrderBy(movie => movie.MPAARating);
+            */
+
+            //use query-style syntax
+            return from movie in movies where movie.MPAARating != null && ratings.Contains(movie.MPAARating) orderby movie.MPAARating select movie;
+
+            /*
             List<Movie> results = new List<Movie>();
             foreach (Movie movie in movies)
             {
@@ -100,7 +127,7 @@ namespace MovieDB
                 }
             }
             return results;
-
+            */
         }
 
         /// <summary>
@@ -112,7 +139,8 @@ namespace MovieDB
         public static IEnumerable<Movie> FilterByGenre(IEnumerable<Movie> movies, IEnumerable<string> genres)
         {
             if (genres == null || genres.Count() == 0) return movies;
-
+            return from movie in movies where movie.MajorGenre != null && genres.Contains(movie.MajorGenre) orderby movie.MajorGenre select movie;
+            /*
             List<Movie> results = new List<Movie>();
             foreach (Movie movie in movies)
             {
@@ -122,6 +150,7 @@ namespace MovieDB
                 }
             }
             return results;
+            */
         }
 
         /// <summary>
@@ -136,6 +165,10 @@ namespace MovieDB
         public static IEnumerable<Movie> FilterByIMDBRating(IEnumerable<Movie> movies, double? min, double? max)
         {
             if (min == null && max == null) return movies;
+
+            return from movie in movies where (min == null || movie.IMDBRating >= min) && (max == null || movie.IMDBRating <= max) orderby movie.IMDBRating select movie;
+
+            /*
             var results = new List<Movie>();
 
             if (min == null)
@@ -164,6 +197,7 @@ namespace MovieDB
                 }
             }
             return results;
+            */
         }
 
         /// <summary>
@@ -178,6 +212,9 @@ namespace MovieDB
         public static IEnumerable<Movie> FilterByRottenTomatoes(IEnumerable<Movie> movies, double? min, double? max)
         {
             if (min == null && max == null) return movies;
+
+            return from movie in movies where (min == null || movie.RottenTomatoesRating >= min) && (max == null || movie.RottenTomatoesRating <= max) orderby movie.RottenTomatoesRating select movie;
+            /*
             var results = new List<Movie>();
 
             if (min == null)
@@ -206,6 +243,7 @@ namespace MovieDB
                 }
             }
             return results;
+            */
         }
 
     }
